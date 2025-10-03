@@ -21,12 +21,17 @@ Esquerda → Desliga lanterna.
 Select → Ativa modo de ajuste do relógio (via serial).
 
 ## Configuração via Serial
+## Apagada no código atual
 
 Para ajustar o relógio, pressione o botão Select e insira a hora no formato HHMM.
 Exemplo:
 
 Digite a hora no formato HHMM:
 1530
+
+## Configuração via botões
+
+Utilize o botão Select para ascender/apagar a luz do display, pressione o botao para  cima para  adicionar 1 hora, para baixo para  subtrair 1 hora, para esquerda para subtrair 1 minuto e para  direita para adicionar 1 minuto
 
 
 Resultado → Relógio configurado para 15:30.
