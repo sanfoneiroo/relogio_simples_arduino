@@ -22,13 +22,6 @@ void setup() {
   pinMode(PIN_LANTERNA, OUTPUT);
 
   digitalWrite(PIN_LANTERNA, HIGH);
-
-  Serial.begin(9600);
-  delay(200);
-
-  // Info CLI
-  Serial.println("Relógio simples");
-  Serial.println("Aperte Select para editar o relógio");
 }
 
 // ================= LOOP =======================
@@ -47,16 +40,24 @@ void loop() {
   
 // --- Leitura botões ---
   int botao = lerBotao();
-  if (botao == 0) { // Direita
+  if (botao == 4 && lanternaLigada == false) { // SELECT
     lanternaLigada = true;
     digitalWrite(PIN_LANTERNA, HIGH);
-  } else if (botao == 1) { // Cima
-  } else if (botao == 2) { // Baixo
-  } else if (botao == 3) { // Esquerda
+  } else if (botao == 4 && lanternaLigada == true) { // SELECT
     lanternaLigada = false;
     digitalWrite(PIN_LANTERNA, LOW);
-  } else if (botao == 4) { // Select
-    ajustarRelogio();    
+  } else if (botao == 1 && hora <23 && hora >=0) { // Cima
+    hora ++;
+    delay(300);
+  } else if (botao == 2 && hora <=23 && hora >0) { // Baixo
+    hora --;
+    delay(300);
+  } else if (botao == 3 && minuto <=59 && minuto >0) { // Esquerda
+    minuto --;
+    delay(300);
+  } else if (botao == 0 && minuto <59 && minuto >=0) { // DIREITA
+    minuto ++;
+    delay(300);    
   }
 }
 
@@ -72,7 +73,7 @@ void mostrarLCD() {
   lcd.print(minuto);
   lcd.print(" ");
   lcd.setCursor(0,1);
-  lcd.print("Relogio Arduino");
+  lcd.print("Relogino");
 }
 
 // Identifica botão
