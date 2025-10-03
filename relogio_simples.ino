@@ -88,24 +88,6 @@ int lerBotao() {
   return -1;
 }
 
-// Limpa buffer Serial
-void limparBufferSerial() {
-  while (Serial.available() > 0) Serial.read();
-}
-
-// Ajusta relógio
-void ajustarRelogio() {
-  Serial.println("Digite a hora no formato HHMM: ");
-  limparBufferSerial();
-  while (Serial.available() == 0);
-  int entrada = Serial.parseInt();
-  limparBufferSerial();
-  hora = entrada / 100;
-  minuto = entrada % 100;
-  ultimoMillis = millis();
-}
-
-
 // Mostra hora formatada
 void mostraHora(int h, int m) {
   if (h < 10) Serial.print("0");
