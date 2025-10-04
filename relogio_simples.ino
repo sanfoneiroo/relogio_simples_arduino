@@ -1,4 +1,6 @@
 #include <LiquidCrystal.h>
+#include <Thermistor.h>
+#include <NTC_Thermistor.h>
 
 // LCD Shield
 LiquidCrystal lcd(8, 9, 4, 5, 6, 7);
@@ -6,6 +8,16 @@ LiquidCrystal lcd(8, 9, 4, 5, 6, 7);
 // Pinos
 #define BUTTONS_PIN A0
 #define PIN_LANTERNA 10
+
+// Termometro
+#define PINO_TERMISTOR A5
+#define RESISTOR 10000        // resistor de referência (10k)
+#define TERMISTOR_NOMINAL 10000 // valor nominal do termistor (10k a 25 °C)
+#define TEMPERATURA_NOMINAL 25  // temperatura nominal (25 °C)
+#define B_COEFICIENTE 3950      // coeficiente Beta do termistor
+
+// cria o objeto para ler o termistor
+NTC_Thermistor temp(PINO_TERMISTOR, RESISTOR, TERMISTOR_NOMINAL, TEMPERATURA_NOMINAL, B_COEFICIENTE);
 
 // Relógio simples
 int hora = 0;
@@ -43,9 +55,11 @@ void loop() {
   if (botao == 4 && lanternaLigada == false) { // SELECT
     lanternaLigada = true;
     digitalWrite(PIN_LANTERNA, HIGH);
+    delay(300);
   } else if (botao == 4 && lanternaLigada == true) { // SELECT
     lanternaLigada = false;
     digitalWrite(PIN_LANTERNA, LOW);
+    delay(300);
   } else if (botao == 1 && hora <23 && hora >=0) { // Cima
     hora ++;
     delay(300);
@@ -72,9 +86,15 @@ void mostrarLCD() {
   if (minuto < 10) lcd.print("0");
   lcd.print(minuto);
   lcd.print(" ");
-  lcd.setCursor(0,1);
   lcd.print("Relogino");
+  lcd.setCursor(0, 1);
+  int celsius = temp.readCelsius();
+  lcd.print("Temp: ");
+  if (celsius < 10) lcd.print("0");
+  lcd.print(celsius);
+  lcd.print(" .C");
 }
+
 
 // Identifica botão
 int lerBotao() {
@@ -87,14 +107,3 @@ int lerBotao() {
   if (leitura < 800) return 4;   // Select
   return -1;
 }
-
-// Mostra hora formatada
-void mostraHora(int h, int m) {
-  if (h < 10) Serial.print("0");
-  Serial.print(h);
-  Serial.print(":");
-  if (m < 10) Serial.print("0");
-  Serial.print(m);
-}
-
-
